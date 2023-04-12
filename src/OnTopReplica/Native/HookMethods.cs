@@ -50,5 +50,7 @@ namespace OnTopReplica.Native {
         [DllImport("User32.dll")]
         public static extern bool DeregisterShellHookWindow(IntPtr hwnd);
 
+        [DllImport("user32.dll")]
+        public static extern bool SetProcessDPIAware();
     }
 }

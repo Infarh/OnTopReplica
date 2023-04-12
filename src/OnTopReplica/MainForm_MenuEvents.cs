@@ -5,9 +5,15 @@ using System.Windows.Forms;
 using OnTopReplica.Properties;
 using WindowsFormsAero.TaskDialog;
 using OnTopReplica.SidePanels;
+using System.Diagnostics;
+using System.IO;
 
 namespace OnTopReplica {
     partial class MainForm {
+
+        private void Menu_opened(object sender, EventArgs e) {
+
+        }
 
         private void Menu_opening(object sender, CancelEventArgs e) {
             //Cancel if currently in "fullscreen" mode or a side panel is open
@@ -58,11 +64,11 @@ namespace OnTopReplica {
 
         private void Menu_Opacity_opening(object sender, CancelEventArgs e) {
             ToolStripMenuItem[] items = {
-				toolStripMenuItem1,
-				toolStripMenuItem2,
-				toolStripMenuItem3,
-				toolStripMenuItem4
-			};
+                toolStripMenuItem1,
+                toolStripMenuItem2,
+                toolStripMenuItem3,
+                toolStripMenuItem4
+            };
 
             foreach (ToolStripMenuItem i in items) {
                 if (((double)i.Tag) == this.Opacity)
@@ -198,5 +204,60 @@ namespace OnTopReplica {
             FullscreenManager.SwitchFullscreen(FullscreenMode.AllScreens);
         }
 
+        private void Menu_Alert_Active_click(object sender, EventArgs e) {
+            //var bounds = RectangleToScreen(ClientRectangle);
+
+            ColorAlertEnable ^= true;
+        }
+
+        private void Menu_Alert_Color_click(object sender, EventArgs e) {
+            var menu_item = (ToolStripMenuItem)sender;
+            var base_menu = (ToolStripDropDownMenu)menu_item.GetCurrentParent();
+
+            var base_menu_item = base_menu.OwnerItem;
+            var base_menu_item_container = base_menu_item.Owner;
+
+            var client_point = this.PointToClient(new Point(base_menu_item_container.Left, base_menu_item_container.Top));
+
+            var bounds = RectangleToScreen(ClientRectangle);
+
+            var img = new Bitmap(bounds.Width, bounds.Height);
+
+            using(var g = Graphics.FromImage(img))
+                g.CopyFromScreen(bounds.Left, bounds.Top, 0, 0, img.Size);
+
+            //var file = new FileInfo("d:\\qwe1.bmp");
+            //img.Save(file.FullName);
+            //file.Execute();
+
+            var color = img.GetPixel(client_point.X, client_point.Y);
+            ColorAlertColor = color;
+
+            Debug.WriteLine(DisplayRectangle);
+            Debug.WriteLine("{0} = {1}", client_point, color);
+
+            menu_item.BackColor = color;
+            menu_item.Text = $"Color[a{color.A},r{color.R},g{color.G},b{color.B}]";
+
+            var icon = new Bitmap(16, 16);
+
+            using(var b = new SolidBrush(color))
+            using (var g = Graphics.FromImage(icon))
+                g.FillEllipse(b, 0, 0, 16, 16);
+
+            base_menu_item.Image = icon;
+        }
+
+        protected override void OnLocationChanged(EventArgs e) {
+            base.OnLocationChanged(e);
+
+            Debug.WriteLine("dl:{0},{1}|{2}:{3}",Left, Top, Width, Height);
+        }
+
+        protected override void OnSizeChanged(EventArgs e) {
+            base.OnSizeChanged(e);
+
+            Debug.WriteLine("ds:{0},{1}|{2}:{3}", Left, Top, Width, Height);
+        }
     }
 }

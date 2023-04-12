@@ -1,9 +1,17 @@
 ﻿using OnTopReplica.Native;
 using OnTopReplica.Properties;
 using System;
+using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsAero.TaskDialog;
+
+using Timer = System.Windows.Forms.Timer;
 
 namespace OnTopReplica {
     //Contains some feature implementations of MainForm
@@ -163,5 +171,102 @@ namespace OnTopReplica {
 
         #endregion
 
+        #region Color alert
+
+        private bool _ColorAlertEnable;
+
+        public bool ColorAlertEnable {
+            get => _ColorAlertEnable;
+            set {
+                if(value == _ColorAlertEnable) return;
+                _ColorAlertEnable = value;
+
+                _ColoeAlertCancelation?.Cancel();
+
+                if(!value) return;
+
+                var cancellation = new CancellationTokenSource();
+                _ColoeAlertCancelation = cancellation;
+
+                var t = ColorAlertWatchAsync(cancellation.Token);
+
+                t.OnCancelled(() => Debug.WriteLine("Capture screen process stoped"));
+            }
+        }
+
+        public int ColorAlertTimeout { get; set; } = 200;
+
+        public Color ColorAlertColor { get; set; } = Color.Red;
+
+        private CancellationTokenSource _ColoeAlertCancelation;
+
+        private async Task ColorAlertWatchAsync(CancellationToken Cancel) {
+
+            Debug.WriteLine("Capture screen process started");
+
+            byte[] pixels = null;
+            var (width, height) = (Width, Height);
+            var bmp = new Bitmap(width, height);
+
+            while(!Cancel.IsCancellationRequested) {
+                await Task.Delay(ColorAlertTimeout).ConfigureAwait(false);
+
+                (width, height) = (Width, Height);
+                if(width != bmp.Width || height != bmp.Height) {
+                    bmp?.Dispose();
+                    bmp = null;
+
+                    Debug.WriteLine("Reset buffer img");
+                }
+
+                if(bmp is null) {
+                    bmp = new Bitmap(width, height);
+
+                    Debug.WriteLine("Update buffer image {0}x{1}", width, height);
+                }
+
+                using(var g = Graphics.FromImage(bmp))
+                    g.CopyFromScreen(Left, Top, 0, 0, bmp.Size);
+
+                Debug.WriteLine("Capture screen at {0},{1} -> {1}x{2}", Left, Top, width, height);
+
+                var data = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, bmp.PixelFormat);
+                try {
+                    var bytes_count = data.Stride * height;
+                    if(pixels is null || pixels.Length != bytes_count)
+                        pixels = new byte[bytes_count];
+
+                    Marshal.Copy(data.Scan0, pixels, 0, bytes_count);
+                }
+                finally {
+                    bmp.UnlockBits(data);
+                }
+
+                if(!CheckImage(pixels, ColorAlertColor)) continue;
+
+                MessageBox.Show("Find!");
+            }
+
+            Cancel.ThrowIfCancellationRequested();
+        }
+
+        private static void CopyPixels(Bitmap bmp, ref byte[] pixels) {
+            var data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, bmp.PixelFormat);
+            try {
+                var bytes_count = data.Stride * bmp.Height;
+                if(pixels is null || pixels.Length != bytes_count)
+                    pixels = new byte[bytes_count];
+
+                Marshal.Copy(data.Scan0, pixels, 0, bytes_count);
+            }
+            finally {
+                bmp.UnlockBits(data);
+            }
+        } 
+
+        private static bool CheckImage(byte[] pixels, Color color) =>
+            MemoryMarshal.Cast<byte, int>(pixels).IndexOf(color.ToArgb()) >= 0;
+
+        #endregion
     }
 }
