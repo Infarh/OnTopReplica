@@ -194,8 +194,6 @@ namespace OnTopReplica {
                 var cancellation = new CancellationTokenSource();
                 _ColoeAlertCancelation = cancellation;
 
-                _ = TestForm.Instance;
-
                 var t = ColorAlertWatchAsync(cancellation.Token);
 
                 t.OnCancelled(() => Debug.WriteLine("Capture screen process stoped"));
@@ -261,20 +259,6 @@ namespace OnTopReplica {
                         g.CopyFromScreen(Left + dx2, Top + dy2, 0, 0, bmp.Size);
 
                     CopyPixels(bmp, ref pixels);
-
-                    TestForm.Instance.View(bmp);
-
-                    //var data = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, bmp.PixelFormat);
-                    //try {
-                    //    var bytes_count = data.Stride * height;
-                    //    if(pixels is null || pixels.Length != bytes_count)
-                    //        pixels = new byte[bytes_count];
-
-                    //    Marshal.Copy(data.Scan0, pixels, 0, bytes_count);
-                    //}
-                    //finally {
-                    //    bmp.UnlockBits(data);
-                    //}
 
                     Cancel.ThrowIfCancellationRequested();
                     if(FindColorInPixels(pixels, ColorAlertColor))
