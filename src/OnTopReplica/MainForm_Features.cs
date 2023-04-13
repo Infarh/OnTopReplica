@@ -1,4 +1,6 @@
-﻿using OnTopReplica.Native;
+﻿using MathCore.WinAPI.Windows;
+
+using OnTopReplica.Native;
 using OnTopReplica.Properties;
 using System;
 using System.Diagnostics;
@@ -11,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsAero.TaskDialog;
 
+using Screen = MathCore.WinAPI.Windows.Screen;
 using Timer = System.Windows.Forms.Timer;
 
 namespace OnTopReplica {
@@ -194,7 +197,7 @@ namespace OnTopReplica {
             }
         }
 
-        public int ColorAlertTimeout { get; set; } = 200;
+        public int ColorAlertTimeout { get; set; } = 150;
 
         public Color ColorAlertColor { get; set; } = Color.Red;
 
@@ -202,16 +205,25 @@ namespace OnTopReplica {
 
         private async Task ColorAlertWatchAsync(CancellationToken Cancel) {
 
+            var screen = Screen.FromHandle(this.Handle);
+
             Debug.WriteLine("Capture screen process started");
+
+            var client_rect = ClientRectangle;
 
             byte[] pixels = null;
             var (width, height) = (Width, Height);
-            var bmp = new Bitmap(width, height);
+            var dx = width - client_rect.Width;
+            var dy = height - client_rect.Height;
+
+            var (dx2, dy2) = (dx / 2, dy / 2);
+
+            var bmp = new Bitmap(width - dx, height - dy);
 
             while(!Cancel.IsCancellationRequested) {
                 await Task.Delay(ColorAlertTimeout).ConfigureAwait(false);
 
-                (width, height) = (Width, Height);
+                (width, height) = (Width - dx, Height - dy);
                 if(width != bmp.Width || height != bmp.Height) {
                     bmp?.Dispose();
                     bmp = null;
@@ -226,7 +238,9 @@ namespace OnTopReplica {
                 }
 
                 using(var g = Graphics.FromImage(bmp))
-                    g.CopyFromScreen(Left, Top, 0, 0, bmp.Size);
+                    g.CopyFromScreen(Left + dx2, Top + dy2, 0, 0, bmp.Size);
+
+                TestForm.Instance.View(bmp);
 
                 Debug.WriteLine("Capture screen at {0},{1} -> {1}x{2}", Left, Top, width, height);
 

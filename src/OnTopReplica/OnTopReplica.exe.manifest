@@ -44,10 +44,10 @@
 
   <description>A real-time always-on-top “replica” of a window of your choice.</description>
 
-  <asmv3:application>
+  <!--<asmv3:application>
     <asmv3:windowsSettings xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings">
       <dpiAware>true</dpiAware>
     </asmv3:windowsSettings>
-  </asmv3:application>
+  </asmv3:application>-->
 
 </asmv1:assembly>
