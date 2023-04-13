@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Media;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -205,8 +206,6 @@ namespace OnTopReplica {
 
         private async Task ColorAlertWatchAsync(CancellationToken Cancel) {
 
-            var screen = Screen.FromHandle(this.Handle);
-
             Debug.WriteLine("Capture screen process started");
 
             var client_rect = ClientRectangle;
@@ -240,7 +239,7 @@ namespace OnTopReplica {
                 using(var g = Graphics.FromImage(bmp))
                     g.CopyFromScreen(Left + dx2, Top + dy2, 0, 0, bmp.Size);
 
-                TestForm.Instance.View(bmp);
+                //TestForm.Instance.View(bmp);
 
                 Debug.WriteLine("Capture screen at {0},{1} -> {1}x{2}", Left, Top, width, height);
 
@@ -258,7 +257,12 @@ namespace OnTopReplica {
 
                 if(!CheckImage(pixels, ColorAlertColor)) continue;
 
-                MessageBox.Show("Find!");
+                using(var wav = File.OpenRead("d:\\warning.wav"))
+                using(var player = new SoundPlayer(wav)) {
+                    player.Load();
+                    player.Play();
+                    await Task.Delay(500);
+                }
             }
 
             Cancel.ThrowIfCancellationRequested();

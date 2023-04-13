@@ -207,7 +207,7 @@ namespace OnTopReplica {
         private void Menu_Alert_Active_click(object sender, EventArgs e) {
             //var bounds = RectangleToScreen(ClientRectangle);
 
-            _ = TestForm.Instance;
+            //_ = TestForm.Instance;
 
             ColorAlertEnable ^= true;
         }
