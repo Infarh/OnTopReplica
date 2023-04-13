@@ -59,5 +59,14 @@
     <Setting Name="RestoreLastShowChrome" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="ColorAlertColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Red</Value>
+    </Setting>
+    <Setting Name="ColorAlertTimeout" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">250</Value>
+    </Setting>
+    <Setting Name="ColorAlertSoundFile" Type="System.String" Scope="User">
+      <Value Profile="(Default)">warning.wav</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

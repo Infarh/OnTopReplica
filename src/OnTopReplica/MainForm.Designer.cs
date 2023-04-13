@@ -70,6 +70,7 @@
             this.alertColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.alertTimeoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.alertTimeoutToolStripTextBox = new System.Windows.Forms.ToolStripTextBox();
+            this.soundToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -81,6 +82,7 @@
             this.menuModeAllScreensToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.enableClickthroughToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fullExitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.alertColorSelectionDialogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuContext.SuspendLayout();
             this.menuWindows.SuspendLayout();
             this.menuOpacity.SuspendLayout();
@@ -446,7 +448,9 @@
             this.alertToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.alertActiveToolStripMenuItem,
             this.alertColorToolStripMenuItem,
-            this.alertTimeoutToolStripMenuItem});
+            this.alertColorSelectionDialogToolStripMenuItem,
+            this.alertTimeoutToolStripMenuItem,
+            this.soundToolStripMenuItem});
             this.alertToolStripMenuItem.Name = "alertToolStripMenuItem";
             this.alertToolStripMenuItem.Size = new System.Drawing.Size(262, 32);
             this.alertToolStripMenuItem.Text = "Alert";
@@ -454,14 +458,14 @@
             // alertActiveToolStripMenuItem
             // 
             this.alertActiveToolStripMenuItem.Name = "alertActiveToolStripMenuItem";
-            this.alertActiveToolStripMenuItem.Size = new System.Drawing.Size(179, 34);
+            this.alertActiveToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.alertActiveToolStripMenuItem.Text = "Active";
             this.alertActiveToolStripMenuItem.Click += new System.EventHandler(this.Menu_Alert_Active_click);
             // 
             // alertColorToolStripMenuItem
             // 
             this.alertColorToolStripMenuItem.Name = "alertColorToolStripMenuItem";
-            this.alertColorToolStripMenuItem.Size = new System.Drawing.Size(179, 34);
+            this.alertColorToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.alertColorToolStripMenuItem.Text = "Color";
             this.alertColorToolStripMenuItem.Click += new System.EventHandler(this.Menu_Alert_Color_click);
             // 
@@ -470,7 +474,7 @@
             this.alertTimeoutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.alertTimeoutToolStripTextBox});
             this.alertTimeoutToolStripMenuItem.Name = "alertTimeoutToolStripMenuItem";
-            this.alertTimeoutToolStripMenuItem.Size = new System.Drawing.Size(179, 34);
+            this.alertTimeoutToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.alertTimeoutToolStripMenuItem.Text = "Timeout";
             // 
             // alertTimeoutToolStripTextBox
@@ -480,6 +484,15 @@
             this.alertTimeoutToolStripTextBox.Size = new System.Drawing.Size(100, 31);
             this.alertTimeoutToolStripTextBox.Text = "250";
             this.alertTimeoutToolStripTextBox.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.alertTimeoutToolStripTextBox.ToolTipText = "Таймаут в мс";
+            this.alertTimeoutToolStripTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.alertTimeoutToolStripTextBox_KeyPress);
+            // 
+            // soundToolStripMenuItem
+            // 
+            this.soundToolStripMenuItem.Name = "soundToolStripMenuItem";
+            this.soundToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.soundToolStripMenuItem.Text = "Sound";
+            this.soundToolStripMenuItem.Click += new System.EventHandler(this.Menu_Alert_SoundSelection_click);
             // 
             // toolStripSeparator1
             // 
@@ -572,12 +585,19 @@
             this.fullExitToolStripMenuItem.Text = global::OnTopReplica.Strings.MenuQuitFullscreen;
             this.fullExitToolStripMenuItem.Click += new System.EventHandler(this.Menu_Fullscreen_ExitFullscreen_click);
             // 
+            // alertColorSelectionDialogToolStripMenuItem
+            // 
+            this.alertColorSelectionDialogToolStripMenuItem.Name = "alertColorSelectionDialogToolStripMenuItem";
+            this.alertColorSelectionDialogToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.alertColorSelectionDialogToolStripMenuItem.Text = "Color dialog";
+            this.alertColorSelectionDialogToolStripMenuItem.Click += new System.EventHandler(this.Menu_Alert_ColorSelectionDialog_click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(473, 397);
+            this.ClientSize = new System.Drawing.Size(481, 405);
             this.ControlBox = false;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.HideCaption = true;
@@ -654,6 +674,8 @@
         private System.Windows.Forms.ToolStripMenuItem alertColorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem alertTimeoutToolStripMenuItem;
         private System.Windows.Forms.ToolStripTextBox alertTimeoutToolStripTextBox;
+        private System.Windows.Forms.ToolStripMenuItem soundToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem alertColorSelectionDialogToolStripMenuItem;
     }
 }
 

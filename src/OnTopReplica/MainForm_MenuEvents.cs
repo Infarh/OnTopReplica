@@ -7,6 +7,7 @@ using WindowsFormsAero.TaskDialog;
 using OnTopReplica.SidePanels;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace OnTopReplica {
     partial class MainForm {
@@ -32,6 +33,9 @@ namespace OnTopReplica {
             chromeToolStripMenuItem.Enabled = showing;
             clickThroughToolStripMenuItem.Enabled = showing;
             clickForwardingToolStripMenuItem.Enabled = showing;
+
+            alertTimeoutToolStripTextBox.Text = Settings.Default.ColorAlertTimeout.ToString();
+            ColorAlertColor = Settings.Default.ColorAlertColor;
         }
 
         private void Menu_Switch_click(object sender, EventArgs e) {
@@ -205,11 +209,7 @@ namespace OnTopReplica {
         }
 
         private void Menu_Alert_Active_click(object sender, EventArgs e) {
-            //var bounds = RectangleToScreen(ClientRectangle);
-
-            //_ = TestForm.Instance;
-
-            ColorAlertEnable ^= true;
+            ColorAlertEnable = !ColorAlertEnable;
         }
 
         private void Menu_Alert_Color_click(object sender, EventArgs e) {
@@ -228,38 +228,86 @@ namespace OnTopReplica {
             using(var g = Graphics.FromImage(img))
                 g.CopyFromScreen(bounds.Left, bounds.Top, 0, 0, img.Size);
 
-            //var file = new FileInfo("d:\\qwe1.bmp");
-            //img.Save(file.FullName);
-            //file.Execute();
-
             var color = img.GetPixel(client_point.X, client_point.Y);
             ColorAlertColor = color;
 
-            Debug.WriteLine(DisplayRectangle);
-            Debug.WriteLine("{0} = {1}", client_point, color);
 
-            menu_item.BackColor = color;
-            menu_item.Text = $"Color[a{color.A},r{color.R},g{color.G},b{color.B}]";
+            //menu_item.BackColor = color;
+            //menu_item.Text = $"Color[a{color.A},r{color.R},g{color.G},b{color.B}]";
+
+            //var icon = new Bitmap(16, 16);
+
+            //using(var b = new SolidBrush(color))
+            //using (var g = Graphics.FromImage(icon))
+            //    g.FillEllipse(b, 0, 0, 16, 16);
+
+            //base_menu_item.Image = icon;
+        }
+
+        private void SetMenuAlertColorIcon(Color color) {
+            alertColorToolStripMenuItem.Text = $"Color[a{color.A},r{color.R},g{color.G},b{color.B}]";
 
             var icon = new Bitmap(16, 16);
 
             using(var b = new SolidBrush(color))
-            using (var g = Graphics.FromImage(icon))
+            using(var g = Graphics.FromImage(icon))
                 g.FillEllipse(b, 0, 0, 16, 16);
 
-            base_menu_item.Image = icon;
+            alertColorToolStripMenuItem.Image = icon;
         }
 
-        protected override void OnLocationChanged(EventArgs e) {
-            base.OnLocationChanged(e);
+        private DateTime _ColorAlert_LastTimeoutChangeTextTime = DateTime.MinValue;
+        private async void alertTimeoutToolStripTextBox_KeyPress(object sender, KeyPressEventArgs e) {
+            if(!char.IsDigit(e.KeyChar) && e.KeyChar != '\b') {
+                e.Handled = true;
+                return;
+            }
 
-            Debug.WriteLine("dl:{0},{1}|{2}:{3}",Left, Top, Width, Height);
+            var now = DateTime.Now;
+            _ColorAlert_LastTimeoutChangeTextTime = now;
+
+            await Task.Delay(750);
+
+            if(_ColorAlert_LastTimeoutChangeTextTime != now) return;
+
+            var text_box = (ToolStripTextBox)sender;
+
+            var text = text_box.Text;
+
+            if(!int.TryParse(text_box.Text, out var timeout) || timeout <= 0) {
+                text_box.Text = "200";
+                text_box.SelectAll();
+            }
+            else 
+                ColorAlertTimeout = timeout;
         }
 
-        protected override void OnSizeChanged(EventArgs e) {
-            base.OnSizeChanged(e);
+        private void Menu_Alert_SoundSelection_click(object sender, EventArgs e) {
+            var settings = Settings.Default;
+            var dialog = new OpenFileDialog {
+                Title = "Файл звукового оповещения",
+                Filter = "Звуковые файлы (*.wav)|*.wav|Все файлы (*.*)|*.*",
+                FileName = settings.ColorAlertSoundFile,
+                RestoreDirectory = true,
+                CheckFileExists = true,
+            };
 
-            Debug.WriteLine("ds:{0},{1}|{2}:{3}", Left, Top, Width, Height);
+            if(dialog.ShowDialog() != DialogResult.OK)
+                return;
+
+            settings.ColorAlertSoundFile = dialog.FileName;
+            settings.Save();
         }
+        private void Menu_Alert_ColorSelectionDialog_click(object sender, EventArgs e) {
+            var dialog = new ColorDialog {
+                Color = ColorAlertColor,
+                SolidColorOnly = true,
+            };
+
+            if(dialog.ShowDialog() != DialogResult.OK) return;
+
+            ColorAlertColor = dialog.Color;
+        }
+
     }
 }
