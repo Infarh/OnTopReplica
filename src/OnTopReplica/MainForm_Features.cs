@@ -187,6 +187,8 @@ namespace OnTopReplica {
                 if(value == _ColorAlertEnable) return;
                 _ColorAlertEnable = value;
 
+                alertActiveToolStripMenuItem.Checked = value;
+
                 _ColoeAlertCancelation?.Cancel();
 
                 if(!value) return;
@@ -240,7 +242,8 @@ namespace OnTopReplica {
                 throw new OperationCanceledException();
             }
 
-            using(var player = new SoundPlayer(sound_file))
+            using(var player = new SoundPlayer(sound_file)) {
+                player.PlaySync();
                 while(!Cancel.IsCancellationRequested) {
                     await Task.Delay(ColorAlertTimeout, Cancel).ConfigureAwait(false);
 
@@ -264,6 +267,7 @@ namespace OnTopReplica {
                     if(FindColorInPixels(pixels, ColorAlertColor))
                         player.PlaySync();
                 }
+            }
 
             Cancel.ThrowIfCancellationRequested();
         }

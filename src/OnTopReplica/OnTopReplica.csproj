@@ -499,9 +499,14 @@
     <None Include="Assets\reduce.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\flag_russia.bmp" />
+    <None Include="Assets\flag_russia.png" />
     <Content Include="Assets\flag_taiwan.png" />
     <Content Include="Assets\flag_brazil.png" />
     <Content Include="new-flat-icon.ico" />
+    <None Include="warning.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Assets\flag_china.png" />
     <None Include="Resources\new-flat-logo-64.png" />
     <None Include="Resources\new-flat-icon.ico" />

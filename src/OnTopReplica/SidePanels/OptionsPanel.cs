@@ -74,6 +74,7 @@ namespace OnTopReplica.SidePanels {
         }
 
         CultureWrapper[] _languageList = {
+            new CultureWrapper("Русский", new CultureInfo("ru-RU"), Resources.flag_russia),
             new CultureWrapper("English", new CultureInfo("en-US"), Resources.flag_usa),
             new CultureWrapper("Čeština", new CultureInfo("cs-CZ"), Resources.flag_czech),
             new CultureWrapper("Dansk", new CultureInfo("da-DK"), Resources.flag_danish),
