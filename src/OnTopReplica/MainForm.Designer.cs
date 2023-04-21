@@ -31,7 +31,6 @@
             this.menuContextWindows = new System.Windows.Forms.ToolStripMenuItem();
             this.menuWindows = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.noneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fullSelectWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.switchToWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.selectRegionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.advancedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,7 +44,6 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
-            this.fullOpacityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.resizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuResize = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.doubleToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -68,6 +66,7 @@
             this.alertToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.alertActiveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.alertColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.alertColorSelectionDialogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.alertTimeoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.alertTimeoutToolStripTextBox = new System.Windows.Forms.ToolStripTextBox();
             this.soundToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -75,6 +74,8 @@
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuContextClose = new System.Windows.Forms.ToolStripMenuItem();
+            this.fullSelectWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fullOpacityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuFullscreenContext = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.modeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuModeStandardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -82,7 +83,8 @@
             this.menuModeAllScreensToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.enableClickthroughToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fullExitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.alertColorSelectionDialogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
+            this.checkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuContext.SuspendLayout();
             this.menuWindows.SuspendLayout();
             this.menuOpacity.SuspendLayout();
@@ -128,7 +130,7 @@
             this.menuWindows.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.noneToolStripMenuItem});
             this.menuWindows.Name = "menuWindows";
-            this.menuWindows.OwnerItem = this.menuContextWindows;
+            this.menuWindows.OwnerItem = this.fullSelectWindowToolStripMenuItem;
             this.menuWindows.Size = new System.Drawing.Size(149, 36);
             // 
             // noneToolStripMenuItem
@@ -136,15 +138,6 @@
             this.noneToolStripMenuItem.Name = "noneToolStripMenuItem";
             this.noneToolStripMenuItem.Size = new System.Drawing.Size(148, 32);
             this.noneToolStripMenuItem.Text = global::OnTopReplica.Strings.MenuWindowsNone;
-            // 
-            // fullSelectWindowToolStripMenuItem
-            // 
-            this.fullSelectWindowToolStripMenuItem.DropDown = this.menuWindows;
-            this.fullSelectWindowToolStripMenuItem.Image = global::OnTopReplica.Properties.Resources.list;
-            this.fullSelectWindowToolStripMenuItem.Name = "fullSelectWindowToolStripMenuItem";
-            this.fullSelectWindowToolStripMenuItem.Size = new System.Drawing.Size(259, 32);
-            this.fullSelectWindowToolStripMenuItem.Text = global::OnTopReplica.Strings.MenuWindows;
-            this.fullSelectWindowToolStripMenuItem.ToolTipText = global::OnTopReplica.Strings.MenuWindowsTT;
             // 
             // switchToWindowToolStripMenuItem
             // 
@@ -230,7 +223,7 @@
             this.toolStripMenuItem3,
             this.toolStripMenuItem4});
             this.menuOpacity.Name = "menuOpacity";
-            this.menuOpacity.OwnerItem = this.menuContextOpacity;
+            this.menuOpacity.OwnerItem = this.fullOpacityToolStripMenuItem;
             this.menuOpacity.ShowCheckMargin = true;
             this.menuOpacity.ShowImageMargin = false;
             this.menuOpacity.Size = new System.Drawing.Size(206, 132);
@@ -273,14 +266,6 @@
             this.toolStripMenuItem4.Text = global::OnTopReplica.Strings.MenuOp25;
             this.toolStripMenuItem4.ToolTipText = global::OnTopReplica.Strings.MenuOp25TT;
             this.toolStripMenuItem4.Click += new System.EventHandler(this.Menu_Opacity_click);
-            // 
-            // fullOpacityToolStripMenuItem
-            // 
-            this.fullOpacityToolStripMenuItem.DropDown = this.menuOpacity;
-            this.fullOpacityToolStripMenuItem.Image = global::OnTopReplica.Properties.Resources.window_opacity;
-            this.fullOpacityToolStripMenuItem.Name = "fullOpacityToolStripMenuItem";
-            this.fullOpacityToolStripMenuItem.Size = new System.Drawing.Size(259, 32);
-            this.fullOpacityToolStripMenuItem.Text = global::OnTopReplica.Strings.MenuOpacity;
             // 
             // resizeToolStripMenuItem
             // 
@@ -450,7 +435,9 @@
             this.alertColorToolStripMenuItem,
             this.alertColorSelectionDialogToolStripMenuItem,
             this.alertTimeoutToolStripMenuItem,
-            this.soundToolStripMenuItem});
+            this.soundToolStripMenuItem,
+            this.toolStripMenuItem5,
+            this.checkToolStripMenuItem});
             this.alertToolStripMenuItem.Name = "alertToolStripMenuItem";
             this.alertToolStripMenuItem.Size = new System.Drawing.Size(262, 32);
             this.alertToolStripMenuItem.Text = "Alert";
@@ -468,6 +455,13 @@
             this.alertColorToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.alertColorToolStripMenuItem.Text = "Color";
             this.alertColorToolStripMenuItem.Click += new System.EventHandler(this.Menu_Alert_Color_click);
+            // 
+            // alertColorSelectionDialogToolStripMenuItem
+            // 
+            this.alertColorSelectionDialogToolStripMenuItem.Name = "alertColorSelectionDialogToolStripMenuItem";
+            this.alertColorSelectionDialogToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.alertColorSelectionDialogToolStripMenuItem.Text = "Color dialog";
+            this.alertColorSelectionDialogToolStripMenuItem.Click += new System.EventHandler(this.Menu_Alert_ColorSelectionDialog_click);
             // 
             // alertTimeoutToolStripMenuItem
             // 
@@ -523,6 +517,23 @@
             this.menuContextClose.Size = new System.Drawing.Size(262, 32);
             this.menuContextClose.Text = global::OnTopReplica.Strings.MenuClose;
             this.menuContextClose.Click += new System.EventHandler(this.Menu_Close_click);
+            // 
+            // fullSelectWindowToolStripMenuItem
+            // 
+            this.fullSelectWindowToolStripMenuItem.DropDown = this.menuWindows;
+            this.fullSelectWindowToolStripMenuItem.Image = global::OnTopReplica.Properties.Resources.list;
+            this.fullSelectWindowToolStripMenuItem.Name = "fullSelectWindowToolStripMenuItem";
+            this.fullSelectWindowToolStripMenuItem.Size = new System.Drawing.Size(259, 32);
+            this.fullSelectWindowToolStripMenuItem.Text = global::OnTopReplica.Strings.MenuWindows;
+            this.fullSelectWindowToolStripMenuItem.ToolTipText = global::OnTopReplica.Strings.MenuWindowsTT;
+            // 
+            // fullOpacityToolStripMenuItem
+            // 
+            this.fullOpacityToolStripMenuItem.DropDown = this.menuOpacity;
+            this.fullOpacityToolStripMenuItem.Image = global::OnTopReplica.Properties.Resources.window_opacity;
+            this.fullOpacityToolStripMenuItem.Name = "fullOpacityToolStripMenuItem";
+            this.fullOpacityToolStripMenuItem.Size = new System.Drawing.Size(259, 32);
+            this.fullOpacityToolStripMenuItem.Text = global::OnTopReplica.Strings.MenuOpacity;
             // 
             // menuFullscreenContext
             // 
@@ -585,19 +596,24 @@
             this.fullExitToolStripMenuItem.Text = global::OnTopReplica.Strings.MenuQuitFullscreen;
             this.fullExitToolStripMenuItem.Click += new System.EventHandler(this.Menu_Fullscreen_ExitFullscreen_click);
             // 
-            // alertColorSelectionDialogToolStripMenuItem
+            // toolStripMenuItem5
             // 
-            this.alertColorSelectionDialogToolStripMenuItem.Name = "alertColorSelectionDialogToolStripMenuItem";
-            this.alertColorSelectionDialogToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
-            this.alertColorSelectionDialogToolStripMenuItem.Text = "Color dialog";
-            this.alertColorSelectionDialogToolStripMenuItem.Click += new System.EventHandler(this.Menu_Alert_ColorSelectionDialog_click);
+            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(267, 6);
+            // 
+            // checkToolStripMenuItem
+            // 
+            this.checkToolStripMenuItem.Name = "checkToolStripMenuItem";
+            this.checkToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.checkToolStripMenuItem.Text = "Check";
+            this.checkToolStripMenuItem.Click += new System.EventHandler(this.Menu_Alert_Check_click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(481, 405);
+            this.ClientSize = new System.Drawing.Size(483, 407);
             this.ControlBox = false;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.HideCaption = true;
@@ -676,6 +692,8 @@
         private System.Windows.Forms.ToolStripTextBox alertTimeoutToolStripTextBox;
         private System.Windows.Forms.ToolStripMenuItem soundToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem alertColorSelectionDialogToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
+        private System.Windows.Forms.ToolStripMenuItem checkToolStripMenuItem;
     }
 }
 

@@ -31,7 +31,7 @@ namespace OnTopReplica {
             }
             set {
                 if(value && Settings.Default.FirstTimeClickForwarding) {
-                    TaskDialog dlg = new TaskDialog(Strings.InfoClickForwarding, Strings.InfoClickForwardingTitle, Strings.InfoClickForwardingContent) {
+                    var dlg = new TaskDialog(Strings.InfoClickForwarding, Strings.InfoClickForwardingTitle, Strings.InfoClickForwardingContent) {
                         CommonButtons = CommonButton.Yes | CommonButton.No
                     };
                     if(dlg.Show(this).CommonButton == CommonButtonResult.No)
@@ -247,7 +247,7 @@ namespace OnTopReplica {
                 while(!Cancel.IsCancellationRequested) {
                     await Task.Delay(ColorAlertTimeout, Cancel).ConfigureAwait(false);
 
-                    if(!TopMost) continue;
+                    if(!TopMost || Opacity == 0 || !Visible) continue;
 
                     (width, height) = (Width - dx, Height - dy);
                     if(width != bmp.Width || height != bmp.Height) {
@@ -258,8 +258,16 @@ namespace OnTopReplica {
                     if(bmp is null)
                         bmp = new Bitmap(width, height);
 
-                    using(var g = Graphics.FromImage(bmp))
+                    using(var g = Graphics.FromImage(bmp)) {
                         g.CopyFromScreen(Left + dx2, Top + dy2, 0, 0, bmp.Size);
+
+                        if(_ColorAlertCheck) {
+                            using(var brush = new SolidBrush(ColorAlertColor))
+                                g.FillRectangle(brush, 10, 10, 10, 10);
+
+                            _ColorAlertCheck = false;
+                        }
+                    }
 
                     CopyPixels(bmp, ref pixels);
 

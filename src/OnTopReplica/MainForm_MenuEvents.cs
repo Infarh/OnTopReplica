@@ -230,18 +230,6 @@ namespace OnTopReplica {
 
             var color = img.GetPixel(client_point.X, client_point.Y);
             ColorAlertColor = color;
-
-
-            //menu_item.BackColor = color;
-            //menu_item.Text = $"Color[a{color.A},r{color.R},g{color.G},b{color.B}]";
-
-            //var icon = new Bitmap(16, 16);
-
-            //using(var b = new SolidBrush(color))
-            //using (var g = Graphics.FromImage(icon))
-            //    g.FillEllipse(b, 0, 0, 16, 16);
-
-            //base_menu_item.Image = icon;
         }
 
         private void SetMenuAlertColorIcon(Color color) {
@@ -309,5 +297,11 @@ namespace OnTopReplica {
             ColorAlertColor = dialog.Color;
         }
 
+        private bool _ColorAlertCheck;
+
+        private void Menu_Alert_Check_click(object sender, EventArgs e) {
+            if(ColorAlertEnable)
+                _ColorAlertCheck = true;
+        }
     }
 }
