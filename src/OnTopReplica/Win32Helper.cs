@@ -4,6 +4,8 @@ using System.Text;
 using OnTopReplica.Native;
 using System.Drawing;
 using System.Windows.Forms;
+using MathCore.WinAPI.Windows;
+using Screen = MathCore.WinAPI.Windows.Screen;
 
 namespace OnTopReplica {
 	public static class Win32Helper {
@@ -16,12 +18,18 @@ namespace OnTopReplica {
 		/// <param name="doubleClick">True if a double click should be injected.</param>
 		public static void InjectFakeMouseClick(IntPtr window, CloneClickEventArgs clickArgs) {
             NPoint clientClickLocation = NPoint.FromPoint(clickArgs.ClientClickLocation);
-			NPoint scrClickLocation = WindowManagerMethods.ClientToScreen(window, clientClickLocation);
 
-			//HACK (?)
-			//If target window has a Menu (which appears on the thumbnail) move the clicked location down
-			//in order to adjust (the menu isn't part of the window's client rect).
-			IntPtr hMenu = WindowMethods.GetMenu(window);
+            var primary_screen = Screen.PrimaryScreen;
+            if(!Screen.FromHandle(window).Handle.Equals(primary_screen.Handle))
+                clientClickLocation /= primary_screen.Scale;
+
+            NPoint scrClickLocation = WindowManagerMethods.ClientToScreen(window, clientClickLocation);
+
+
+            //HACK (?)
+            //If target window has a Menu (which appears on the thumbnail) move the clicked location down
+            //in order to adjust (the menu isn't part of the window's client rect).
+            IntPtr hMenu = WindowMethods.GetMenu(window);
 			if (hMenu != IntPtr.Zero)
 				scrClickLocation.Y -= SystemInformation.MenuHeight;
 

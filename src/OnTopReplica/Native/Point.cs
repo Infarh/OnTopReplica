@@ -32,5 +32,13 @@ namespace OnTopReplica.Native {
         public override string ToString() {
             return "{" + X + "," + Y + "}";
         }
+
+        public static NPoint operator *(NPoint p, double k) => new NPoint(
+            (int)(p.X * k),
+            (int)(p.Y * k));
+
+        public static NPoint operator /(NPoint p, double k) => new NPoint(
+            (int)(p.X / k),
+            (int)(p.Y / k));
     }
 }
