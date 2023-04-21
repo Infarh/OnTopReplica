@@ -223,6 +223,8 @@ namespace OnTopReplica {
 
         private CancellationTokenSource _ColoeAlertCancelation;
 
+        private bool _ColorAlertInActive;
+
         private async Task ColorAlertWatchAsync(CancellationToken Cancel) {
 
             var client_rect = ClientRectangle;
@@ -272,8 +274,16 @@ namespace OnTopReplica {
                     CopyPixels(bmp, ref pixels);
 
                     Cancel.ThrowIfCancellationRequested();
-                    if(FindColorInPixels(pixels, ColorAlertColor))
-                        player.PlaySync();
+                    if(FindColorInPixels(pixels, ColorAlertColor)) {
+                        _ColorAlertInActive = true;
+
+                        if(!_ColorAlertCommit)
+                            player.PlaySync();
+                    }
+                    else if(_ColorAlertInActive) {
+                        _ColorAlertInActive = false;
+                        _ColorAlertCommit = false;
+                    }
                 }
             }
 

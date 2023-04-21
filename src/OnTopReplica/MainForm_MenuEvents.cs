@@ -303,5 +303,12 @@ namespace OnTopReplica {
             if(ColorAlertEnable)
                 _ColorAlertCheck = true;
         }
+
+        private bool _ColorAlertCommit;
+
+        private void Menu_Alert_Commit_click(object sender, EventArgs e) {
+            if(ColorAlertEnable && _ColorAlertInActive)
+                _ColorAlertCommit = true;
+        }
     }
 }
