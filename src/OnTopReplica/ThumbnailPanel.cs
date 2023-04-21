@@ -115,7 +115,7 @@ namespace OnTopReplica {
         /// </summary>
         protected byte ThumbnailOpacity {
             get {
-                return (_drawMouseRegions) ? (byte)130 : (byte)255;
+                return (_drawMouseRegions) ? (byte)200 : (byte)255;
             }
         }
 
