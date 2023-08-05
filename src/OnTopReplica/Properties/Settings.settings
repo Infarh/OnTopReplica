@@ -68,5 +68,17 @@
     <Setting Name="ColorAlertSoundFile" Type="System.String" Scope="User">
       <Value Profile="(Default)">warning.wav</Value>
     </Setting>
+    <Setting Name="ColorAlertRepeatCount" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">3</Value>
+    </Setting>
+    <Setting Name="ColorAlertRepeatCountEnable" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ColorAlertFuzzyEqual" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ColorAlertFuzzyEqualThreshold" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">20</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

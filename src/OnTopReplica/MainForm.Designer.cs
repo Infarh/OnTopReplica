@@ -31,7 +31,6 @@
             this.menuContextWindows = new System.Windows.Forms.ToolStripMenuItem();
             this.menuWindows = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.noneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fullSelectWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.switchToWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.selectRegionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.advancedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -67,17 +66,23 @@
             this.reduceToIconToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.alertToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.alertActiveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.repeatCountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.alertRepeatCountToolStripTextBox = new System.Windows.Forms.ToolStripTextBox();
             this.alertColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fuzzyEqualToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ColorAlertFuzyEqualThresholdToolStripTextBox = new System.Windows.Forms.ToolStripTextBox();
             this.alertColorSelectionDialogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.alertTimeoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.alertTimeoutToolStripTextBox = new System.Windows.Forms.ToolStripTextBox();
             this.soundToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
             this.checkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.commitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuContextClose = new System.Windows.Forms.ToolStripMenuItem();
+            this.fullSelectWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuFullscreenContext = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.modeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuModeStandardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -85,7 +90,6 @@
             this.menuModeAllScreensToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.enableClickthroughToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fullExitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.commitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuContext.SuspendLayout();
             this.menuWindows.SuspendLayout();
             this.menuOpacity.SuspendLayout();
@@ -112,7 +116,7 @@
             this.aboutToolStripMenuItem,
             this.menuContextClose});
             this.menuContext.Name = "menuContext";
-            this.menuContext.Size = new System.Drawing.Size(263, 459);
+            this.menuContext.Size = new System.Drawing.Size(263, 426);
             this.menuContext.Opening += new System.ComponentModel.CancelEventHandler(this.Menu_opening);
             this.menuContext.Opened += new System.EventHandler(this.Menu_opened);
             // 
@@ -131,6 +135,7 @@
             this.menuWindows.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.noneToolStripMenuItem});
             this.menuWindows.Name = "menuWindows";
+            this.menuWindows.OwnerItem = this.fullSelectWindowToolStripMenuItem;
             this.menuWindows.Size = new System.Drawing.Size(149, 36);
             // 
             // noneToolStripMenuItem
@@ -138,15 +143,6 @@
             this.noneToolStripMenuItem.Name = "noneToolStripMenuItem";
             this.noneToolStripMenuItem.Size = new System.Drawing.Size(148, 32);
             this.noneToolStripMenuItem.Text = global::OnTopReplica.Strings.MenuWindowsNone;
-            // 
-            // fullSelectWindowToolStripMenuItem
-            // 
-            this.fullSelectWindowToolStripMenuItem.DropDown = this.menuWindows;
-            this.fullSelectWindowToolStripMenuItem.Image = global::OnTopReplica.Properties.Resources.list;
-            this.fullSelectWindowToolStripMenuItem.Name = "fullSelectWindowToolStripMenuItem";
-            this.fullSelectWindowToolStripMenuItem.Size = new System.Drawing.Size(259, 32);
-            this.fullSelectWindowToolStripMenuItem.Text = global::OnTopReplica.Strings.MenuWindows;
-            this.fullSelectWindowToolStripMenuItem.ToolTipText = global::OnTopReplica.Strings.MenuWindowsTT;
             // 
             // switchToWindowToolStripMenuItem
             // 
@@ -462,17 +458,52 @@
             // 
             // alertActiveToolStripMenuItem
             // 
+            this.alertActiveToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.repeatCountToolStripMenuItem,
+            this.alertRepeatCountToolStripTextBox});
             this.alertActiveToolStripMenuItem.Name = "alertActiveToolStripMenuItem";
             this.alertActiveToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.alertActiveToolStripMenuItem.Text = "Active";
             this.alertActiveToolStripMenuItem.Click += new System.EventHandler(this.Menu_Alert_Active_click);
             // 
+            // repeatCountToolStripMenuItem
+            // 
+            this.repeatCountToolStripMenuItem.Name = "repeatCountToolStripMenuItem";
+            this.repeatCountToolStripMenuItem.Size = new System.Drawing.Size(218, 34);
+            this.repeatCountToolStripMenuItem.Text = "Repeat count";
+            this.repeatCountToolStripMenuItem.Click += new System.EventHandler(this.repeatCountToolStripMenuItem_Click);
+            // 
+            // alertRepeatCountToolStripTextBox
+            // 
+            this.alertRepeatCountToolStripTextBox.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.alertRepeatCountToolStripTextBox.Name = "alertRepeatCountToolStripTextBox";
+            this.alertRepeatCountToolStripTextBox.Size = new System.Drawing.Size(100, 31);
+            this.alertRepeatCountToolStripTextBox.Text = "3";
+            this.alertRepeatCountToolStripTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.alertRepeatCountToolStripTextBox_KeyPressed);
+            // 
             // alertColorToolStripMenuItem
             // 
+            this.alertColorToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fuzzyEqualToolStripMenuItem,
+            this.ColorAlertFuzyEqualThresholdToolStripTextBox});
             this.alertColorToolStripMenuItem.Name = "alertColorToolStripMenuItem";
             this.alertColorToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.alertColorToolStripMenuItem.Text = "Color";
             this.alertColorToolStripMenuItem.Click += new System.EventHandler(this.Menu_Alert_Color_click);
+            // 
+            // fuzzyEqualToolStripMenuItem
+            // 
+            this.fuzzyEqualToolStripMenuItem.Name = "fuzzyEqualToolStripMenuItem";
+            this.fuzzyEqualToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.fuzzyEqualToolStripMenuItem.Text = "Fuzzy equal";
+            this.fuzzyEqualToolStripMenuItem.Click += new System.EventHandler(this.fuzzyEqualToolStripMenuItem_Click);
+            // 
+            // ColorAlertFuzyEqualThresholdToolStripTextBox
+            // 
+            this.ColorAlertFuzyEqualThresholdToolStripTextBox.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.ColorAlertFuzyEqualThresholdToolStripTextBox.Name = "ColorAlertFuzyEqualThresholdToolStripTextBox";
+            this.ColorAlertFuzyEqualThresholdToolStripTextBox.Size = new System.Drawing.Size(100, 31);
+            this.ColorAlertFuzyEqualThresholdToolStripTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ColorAlertFuzyEqualThresholdToolStripTextBox_KeyPress);
             // 
             // alertColorSelectionDialogToolStripMenuItem
             // 
@@ -518,6 +549,13 @@
             this.checkToolStripMenuItem.Text = "Check";
             this.checkToolStripMenuItem.Click += new System.EventHandler(this.Menu_Alert_Check_click);
             // 
+            // commitToolStripMenuItem
+            // 
+            this.commitToolStripMenuItem.Name = "commitToolStripMenuItem";
+            this.commitToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.commitToolStripMenuItem.Text = "Commit";
+            this.commitToolStripMenuItem.Click += new System.EventHandler(this.Menu_Alert_Commit_click);
+            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
@@ -547,6 +585,15 @@
             this.menuContextClose.Size = new System.Drawing.Size(262, 32);
             this.menuContextClose.Text = global::OnTopReplica.Strings.MenuClose;
             this.menuContextClose.Click += new System.EventHandler(this.Menu_Close_click);
+            // 
+            // fullSelectWindowToolStripMenuItem
+            // 
+            this.fullSelectWindowToolStripMenuItem.DropDown = this.menuWindows;
+            this.fullSelectWindowToolStripMenuItem.Image = global::OnTopReplica.Properties.Resources.list;
+            this.fullSelectWindowToolStripMenuItem.Name = "fullSelectWindowToolStripMenuItem";
+            this.fullSelectWindowToolStripMenuItem.Size = new System.Drawing.Size(259, 32);
+            this.fullSelectWindowToolStripMenuItem.Text = global::OnTopReplica.Strings.MenuWindows;
+            this.fullSelectWindowToolStripMenuItem.ToolTipText = global::OnTopReplica.Strings.MenuWindowsTT;
             // 
             // menuFullscreenContext
             // 
@@ -609,19 +656,12 @@
             this.fullExitToolStripMenuItem.Text = global::OnTopReplica.Strings.MenuQuitFullscreen;
             this.fullExitToolStripMenuItem.Click += new System.EventHandler(this.Menu_Fullscreen_ExitFullscreen_click);
             // 
-            // commitToolStripMenuItem
-            // 
-            this.commitToolStripMenuItem.Name = "commitToolStripMenuItem";
-            this.commitToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
-            this.commitToolStripMenuItem.Text = "Commit";
-            this.commitToolStripMenuItem.Click += new System.EventHandler(this.Menu_Alert_Commit_click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(485, 409);
+            this.ClientSize = new System.Drawing.Size(499, 423);
             this.ControlBox = false;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.HideCaption = true;
@@ -703,6 +743,10 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
         private System.Windows.Forms.ToolStripMenuItem checkToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem commitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem repeatCountToolStripMenuItem;
+        private System.Windows.Forms.ToolStripTextBox alertRepeatCountToolStripTextBox;
+        private System.Windows.Forms.ToolStripMenuItem fuzzyEqualToolStripMenuItem;
+        private System.Windows.Forms.ToolStripTextBox ColorAlertFuzyEqualThresholdToolStripTextBox;
     }
 }
 

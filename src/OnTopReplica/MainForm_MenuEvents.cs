@@ -34,8 +34,15 @@ namespace OnTopReplica {
             clickThroughToolStripMenuItem.Enabled = showing;
             clickForwardingToolStripMenuItem.Enabled = showing;
 
-            alertTimeoutToolStripTextBox.Text = Settings.Default.ColorAlertTimeout.ToString();
-            ColorAlertColor = Settings.Default.ColorAlertColor;
+            var settings = Settings.Default;
+            alertTimeoutToolStripTextBox.Text = settings.ColorAlertTimeout.ToString();
+            ColorAlertColor = settings.ColorAlertColor;
+
+            ColorAlertRepeatCount = settings.ColorAlertRepeatCount;
+            ColorAlertRepeatCountEnabled = settings.ColorAlertRepeatCountEnable;
+
+            FuzzyEqualThreshold = settings.ColorAlertFuzzyEqualThreshold;
+            ColorAlertFuzzyEqual = settings.ColorAlertFuzzyEqual;
         }
 
         private void Menu_Switch_click(object sender, EventArgs e) {
@@ -268,6 +275,41 @@ namespace OnTopReplica {
             }
             else 
                 ColorAlertTimeout = timeout;
+        }
+
+        private void repeatCountToolStripMenuItem_Click(object sender, EventArgs e) {
+            ColorAlertRepeatCountEnabled ^= true;
+        }
+
+        private void alertRepeatCountToolStripTextBox_KeyPressed(object sender, KeyPressEventArgs e) {
+            if(!char.IsDigit(e.KeyChar) && e.KeyChar != '\b') {
+                e.Handled = true;
+                return;
+            }
+
+            if(sender is not ToolStripTextBox { Text: { Length: > 0 } text } || !int.TryParse(text, out var value)) {
+                return;
+            }
+
+            ColorAlertRepeatCount = value;
+        }
+
+        private void fuzzyEqualToolStripMenuItem_Click(object sender, EventArgs e) {
+            ColorAlertFuzzyEqual ^= true;
+        }
+
+
+        private void ColorAlertFuzyEqualThresholdToolStripTextBox_KeyPress(object sender, KeyPressEventArgs e) {
+            if(!char.IsDigit(e.KeyChar) && e.KeyChar != '\b') {
+                e.Handled = true;
+                return;
+            }
+
+            if(sender is not ToolStripTextBox { Text: { Length: > 0 } text } || !int.TryParse(text, out var value)) {
+                return;
+            }
+
+            FuzzyEqualThreshold = value;
         }
 
         private void Menu_Alert_SoundSelection_click(object sender, EventArgs e) {

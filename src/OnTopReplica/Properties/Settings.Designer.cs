@@ -12,7 +12,7 @@ namespace OnTopReplica.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.5.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.6.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -283,6 +283,54 @@ namespace OnTopReplica.Properties {
             }
             set {
                 this["ColorAlertSoundFile"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public int ColorAlertRepeatCount {
+            get {
+                return ((int)(this["ColorAlertRepeatCount"]));
+            }
+            set {
+                this["ColorAlertRepeatCount"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ColorAlertRepeatCountEnable {
+            get {
+                return ((bool)(this["ColorAlertRepeatCountEnable"]));
+            }
+            set {
+                this["ColorAlertRepeatCountEnable"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ColorAlertFuzzyEqual {
+            get {
+                return ((bool)(this["ColorAlertFuzzyEqual"]));
+            }
+            set {
+                this["ColorAlertFuzzyEqual"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        public int ColorAlertFuzzyEqualThreshold {
+            get {
+                return ((int)(this["ColorAlertFuzzyEqualThreshold"]));
+            }
+            set {
+                this["ColorAlertFuzzyEqualThreshold"] = value;
             }
         }
     }

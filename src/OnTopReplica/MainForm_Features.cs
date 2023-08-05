@@ -189,12 +189,12 @@ namespace OnTopReplica {
 
                 alertActiveToolStripMenuItem.Checked = value;
 
-                _ColoeAlertCancelation?.Cancel();
+                _ColorAlertCancellation?.Cancel();
 
                 if(!value) return;
 
                 var cancellation = new CancellationTokenSource();
-                _ColoeAlertCancelation = cancellation;
+                _ColorAlertCancellation = cancellation;
 
                 var t = ColorAlertWatchAsync(cancellation.Token);
 
@@ -221,9 +221,70 @@ namespace OnTopReplica {
             }
         }
 
-        private CancellationTokenSource _ColoeAlertCancelation;
+        private CancellationTokenSource _ColorAlertCancellation;
 
         private bool _ColorAlertInActive;
+
+        private int _ColorAlertRepeatCount;
+
+        public int ColorAlertRepeatCount {
+            get => _ColorAlertRepeatCount;
+            set {
+                if(value < 0) value = 0;
+                if(_ColorAlertRepeatCount == value) return;
+
+                _ColorAlertRepeatCount = value;
+                Settings.Default.ColorAlertRepeatCount = value;
+                Settings.Default.Save();
+
+                alertRepeatCountToolStripTextBox.Text = value.ToString();
+            }
+        }
+
+        private bool _ColorAlertColorAlertRepeatCountEnabled;
+
+        public bool ColorAlertRepeatCountEnabled {
+            get => _ColorAlertColorAlertRepeatCountEnabled;
+            set {
+                if(ColorAlertRepeatCount < 0) {
+                    ColorAlertRepeatCount = 3;
+                }
+
+                _ColorAlertColorAlertRepeatCountEnabled = value;
+                Settings.Default.ColorAlertRepeatCountEnable = value;
+                Settings.Default.Save();
+                repeatCountToolStripMenuItem.Checked = value;
+            }
+        }
+
+        private int _ColorAlertFuzzyEqualThreshold = 20;
+
+        public int FuzzyEqualThreshold {
+            get => Math.Max(0, _ColorAlertFuzzyEqualThreshold);
+            set {
+                if(value < 0) value = 0;
+                if(_ColorAlertFuzzyEqualThreshold == value) return;
+
+                _ColorAlertFuzzyEqualThreshold = value;
+                Settings.Default.ColorAlertFuzzyEqualThreshold = value;
+                Settings.Default.Save();
+
+                ColorAlertFuzyEqualThresholdToolStripTextBox.Text = value.ToString();
+            }
+        }
+
+        private bool _ColorAlertFuzzyEqual;
+
+        public bool ColorAlertFuzzyEqual {
+            get => _ColorAlertFuzzyEqual;
+            set {
+                if(_ColorAlertFuzzyEqual == value) return;
+                _ColorAlertFuzzyEqual = value;
+                Settings.Default.ColorAlertFuzzyEqual = value;
+                Settings.Default.Save();
+                fuzzyEqualToolStripMenuItem.Checked = value;
+            }
+        }
 
         private async Task ColorAlertWatchAsync(CancellationToken Cancel) {
 
