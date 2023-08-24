@@ -226,21 +226,28 @@ namespace OnTopReplica {
             var base_menu_item = base_menu.OwnerItem;
             var base_menu_item_container = base_menu_item.Owner;
 
-            var client_point = this.PointToClient(new Point(base_menu_item_container.Left, base_menu_item_container.Top));
+            var (width, height) = (Width, Height);
+            var client_rect = ClientRectangle;
+            var dx = width - client_rect.Width;
+            var dy = height - client_rect.Height;
+
+            var (dx2, dy2) = (dx / 2, dy / 2);
 
             var bounds = RectangleToScreen(ClientRectangle);
 
-            var img = new Bitmap(bounds.Width, bounds.Height);
+            var client_point = new Point(base_menu_item_container.Left - bounds.Left, base_menu_item_container.Top - bounds.Top);
 
-            using(var g = Graphics.FromImage(img))
-                g.CopyFromScreen(bounds.Left, bounds.Top, 0, 0, img.Size);
+            var bmp = new Bitmap(bounds.Width, bounds.Height);
 
-            var color = img.GetPixel(client_point.X, client_point.Y);
+            using(var g = Graphics.FromImage(bmp))
+                g.CopyFromScreen(Left + dx2, Top + dy2, 0, 0, bmp.Size);
+
+            var color = bmp.GetPixel(client_point.X - 1, client_point.Y - 1);
             ColorAlertColor = color;
         }
 
         private void SetMenuAlertColorIcon(Color color) {
-            alertColorToolStripMenuItem.Text = $"Color[a{color.A},r{color.R},g{color.G},b{color.B}]";
+            alertColorToolStripMenuItem.Text = $@"Color[a{color.A},r{color.R},g{color.G},b{color.B}]";
 
             var icon = new Bitmap(16, 16);
 
@@ -298,8 +305,7 @@ namespace OnTopReplica {
             ColorAlertFuzzyEqual ^= true;
         }
 
-
-        private void ColorAlertFuzyEqualThresholdToolStripTextBox_KeyPress(object sender, KeyPressEventArgs e) {
+        private void ColorAlertFuzzyEqualThresholdToolStripTextBox_KeyPress(object sender, KeyPressEventArgs e) {
             if(!char.IsDigit(e.KeyChar) && e.KeyChar != '\b') {
                 e.Handled = true;
                 return;
@@ -328,6 +334,7 @@ namespace OnTopReplica {
             settings.ColorAlertSoundFile = dialog.FileName;
             settings.Save();
         }
+
         private void Menu_Alert_ColorSelectionDialog_click(object sender, EventArgs e) {
             var dialog = new ColorDialog {
                 Color = ColorAlertColor,

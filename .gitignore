@@ -7,3 +7,4 @@ src/Installer/output/*
 *.user
 *.suo
 src/packages/*
+/src/_ReSharper.Caches/ReSharperPlatformVs17232_c1d05684.OnTopReplica.00

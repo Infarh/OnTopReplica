@@ -198,7 +198,7 @@ namespace OnTopReplica {
 
                 var t = ColorAlertWatchAsync(cancellation.Token);
 
-                t.OnCancelled(() => Debug.WriteLine("Capture screen process stoped"));
+                t.OnCancelled(() => Debug.WriteLine("Capture screen process stopped"));
             }
         }
 
@@ -257,7 +257,7 @@ namespace OnTopReplica {
             }
         }
 
-        private int _ColorAlertFuzzyEqualThreshold = 20;
+        private int _ColorAlertFuzzyEqualThreshold;
 
         public int FuzzyEqualThreshold {
             get => Math.Max(0, _ColorAlertFuzzyEqualThreshold);
@@ -301,10 +301,11 @@ namespace OnTopReplica {
 
             var sound_file = Settings.Default.ColorAlertSoundFile;
             if(!File.Exists(sound_file)) {
-                MessageBox.Show($"Звуковой файл {sound_file} не найден", "Файл не найден", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show($@"Звуковой файл {sound_file} не найден", "Файл не найден", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 throw new OperationCanceledException();
             }
 
+            var allert_sound_play_count = 0;
             using(var player = new SoundPlayer(sound_file)) {
                 player.PlaySync();
                 while(!Cancel.IsCancellationRequested) {
@@ -318,8 +319,7 @@ namespace OnTopReplica {
                         bmp = null;
                     }
 
-                    if(bmp is null)
-                        bmp = new Bitmap(width, height);
+                    bmp ??= new(width, height);
 
                     using(var g = Graphics.FromImage(bmp)) {
                         g.CopyFromScreen(Left + dx2, Top + dy2, 0, 0, bmp.Size);
@@ -335,15 +335,24 @@ namespace OnTopReplica {
                     CopyPixels(bmp, ref pixels);
 
                     Cancel.ThrowIfCancellationRequested();
-                    if(FindColorInPixels(pixels, ColorAlertColor)) {
+
+                    if(FindColorInPixels(pixels, ColorAlertColor, _ColorAlertFuzzyEqual ? _ColorAlertFuzzyEqualThreshold : 0)) {
                         _ColorAlertInActive = true;
 
-                        if(!_ColorAlertCommit)
-                            player.PlaySync();
+                        if(_ColorAlertCommit) continue;
+
+                        player.PlaySync();
+                        allert_sound_play_count++;
+
+                        if(_ColorAlertColorAlertRepeatCountEnabled
+                           && _ColorAlertRepeatCount > 0
+                           && allert_sound_play_count == _ColorAlertRepeatCount)
+                            _ColorAlertCommit = true;
                     }
                     else if(_ColorAlertInActive) {
                         _ColorAlertInActive = false;
                         _ColorAlertCommit = false;
+                        allert_sound_play_count = 0;
                     }
                 }
             }
@@ -365,8 +374,28 @@ namespace OnTopReplica {
             }
         }
 
-        private static bool FindColorInPixels(byte[] pixels, Color color) =>
-            MemoryMarshal.Cast<byte, int>(pixels).IndexOf(color.ToArgb()) >= 0;
+        //private static bool FindColorInPixels(byte[] pixels, Color color) =>
+        //    MemoryMarshal.Cast<byte, int>(pixels).IndexOf(color.ToArgb()) >= 0;
+
+        private static bool FindColorInPixels(byte[] pixels, Color color, int Threshold = 0) {
+            GetColors(color.ToArgb(), out var a0, out var r0, out var g0, out var b0);
+
+            foreach(var pixel in MemoryMarshal.Cast<byte, int>(pixels)) {
+                GetColors(pixel, out var a, out var r, out var g, out var b);
+
+                if(Math.Abs(a - a0) + Math.Abs(r - r0) + Math.Abs(g - g0) + Math.Abs(b - b0) <= Threshold)
+                    return true;
+            }
+
+            return false;
+
+            static void GetColors(int value, out byte A, out byte R, out byte G, out byte B) {
+                A = (byte)((value >> 24) & byte.MaxValue);
+                R = (byte)((value >> 16) & byte.MaxValue);
+                G = (byte)((value >> 8) & byte.MaxValue);
+                B = (byte)(value & byte.MaxValue);
+            }
+        }
 
         #endregion
     }

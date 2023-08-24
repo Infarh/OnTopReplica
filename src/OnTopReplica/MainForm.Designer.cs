@@ -503,7 +503,7 @@
             this.ColorAlertFuzyEqualThresholdToolStripTextBox.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.ColorAlertFuzyEqualThresholdToolStripTextBox.Name = "ColorAlertFuzyEqualThresholdToolStripTextBox";
             this.ColorAlertFuzyEqualThresholdToolStripTextBox.Size = new System.Drawing.Size(100, 31);
-            this.ColorAlertFuzyEqualThresholdToolStripTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ColorAlertFuzyEqualThresholdToolStripTextBox_KeyPress);
+            this.ColorAlertFuzyEqualThresholdToolStripTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ColorAlertFuzzyEqualThresholdToolStripTextBox_KeyPress);
             // 
             // alertColorSelectionDialogToolStripMenuItem
             // 
